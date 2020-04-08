@@ -97,3 +97,64 @@ ggplot(
   facet_wrap(~year)+
   scale_x_log10()+
   geom_smooth(colour="red", method="lm")
+
+rough_plot <- ggplot(data=a_countries, aes(x=year, y=lifeExp, colour=continent))+
+  geom_line()+
+  facet_wrap(~country)
+
+rough_plot+
+  labs(title="Figure 1",
+       x="Year",
+       y="Life Expectancy",
+       colour="Continent")
+
+rough_plot+
+  labs(title="Life expectancy by 'A' countries from 1950 to 2009",
+       x="Year",
+       y="Life Expectancy",
+       colour="Continent",
+       caption = "Data source: Gapminder")+
+  theme_bw()+#theme_bw() + theme_minimal() + theme_linedraw are some inbuilt options
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face="bold")
+  )
+
+
+lifeExp_plot <- rough_plot+
+  labs(title="Life expectancy by 'A' countries from 1950 to 2009",
+       x="Year",
+       y="Life Expectancy",
+       colour="Continent",
+       caption = "Data source: Gapminder")+
+  theme_bw()+#theme_bw() + theme_minimal() + theme_linedraw are some inbuilt options
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face="bold"),
+    strip.background = element_blank(),
+    panel.grid.major=element_line(size=1),
+    axis.title = element_text(size=10, color="blue"),
+    legend.position = "bottom"
+  )
+
+ggsave(filename="outputs/lifeExp.png", plot=lifeExp_plot, width=12, height=10, dpi=300,
+       units="cm")
+
+library(cowplot)
+
+plot1 <- ggplot(gapminder, aes(x=gdpPercap, y=lifeExp))+geom_point()
+plot2 <- ggplot(gapminder, aes(x=continent, y=lifeExp))+geom_boxplot()
+plot3 <- ggplot(gapminder, aes(x=gdpPercap, y=pop))+geom_point()
+plot4 <- ggplot(gapminder, aes(x=lifeExp, y=pop))+geom_point()
+
+plot_grid(plot1, plot2, plot3, plot4)
+
+plot_grid(plot1, plot2, plot3, plot4, rel_heights=c(1,3)) #(first row, second row) - we are saying increase second row 3 times more than the first
+
+plot_grid(plot1, plot2, plot3, plot4, rel_heights=c(1,3),
+          rel_widths = c(2,1)) #(first row, second row) - we are saying increase second row 3 times more than the first
+
+combined_plot <- plot_grid(plot1, plot2, plot3, plot4, labels ="AUTO")
+
+ggsave(filename="outputs/combined plot.png", plot=combined_plot, width=16, height=10, dpi=300,
+       units="cm")
