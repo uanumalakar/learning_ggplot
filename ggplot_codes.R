@@ -1,4 +1,5 @@
 library(tidyverse)
+library(knitr)
 
 gapminder <- read_csv("data/gapminder_data.csv")
 
@@ -158,3 +159,9 @@ combined_plot <- plot_grid(plot1, plot2, plot3, plot4, labels ="AUTO")
 
 ggsave(filename="outputs/combined plot.png", plot=combined_plot, width=16, height=10, dpi=300,
        units="cm")
+
+aus_gapminder <- filter(gapminder, country=="Australia")
+ggplot(aus_gapminder)+
+  aes(x=year, y=pop)+
+  geom_line()+
+  scale_y_log10()

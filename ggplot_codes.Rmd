@@ -1,0 +1,52 @@
+---
+title: "ggplot_codes_rmd"
+output: html_document
+author: YuwanM
+date: 8/4/2020
+---
+
+# Title
+
+create some **bold** text or in _italics_. 
+
+```
+a block of code
+```
+
+* bold with double asterisks
+* italics with underscores
+* code with three backticks
+
+1. use this to create numbered list
+2. this is an example
+
+## 2nd level header
+```{r, echo=FALSE}
+library(tidyverse)
+```
+
+
+### Australian population over time year
+```{r, echo=TRUE}
+gapminder <- read_csv("data/gapminder_data.csv")
+aus_gapminder <- filter(gapminder, country=="Australia")
+```
+
+#### Output plot
+```{r, eval=TRUE}
+ggplot(aus_gapminder)+
+  aes(x=year, y=pop)+
+  geom_line()+
+  scale_y_log10()+
+  labs(title="Australian population over time",
+       x="Year",
+       y="Population",
+       caption = "Data source: Gapminder")+
+  theme(
+    panel.grid.minor = element_blank(),
+    plot.title = element_text(face="bold"),
+    panel.grid.major=element_line(size=1),
+    axis.title = element_text(size=10, color="blue")
+    )
+```
+
